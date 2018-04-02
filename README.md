@@ -36,4 +36,21 @@ int allocate_map(void)                      //For Creating & initialising data s
     return -1;
 }
 
+int allocate_pid(void)                            //For allocate and return pid(Ex 3.20)      
+{
+    for(int i = MIN_PID, j =0; i <= MAX_PID; i++, j++)
+    {
+        if(ArrForPid[j].ProcessBit == 0)
+        {
+            ArrForPid[j].VarOfPid= i;
+            ArrForPid[j].ProcessBit = 1;
+            return i;
+            break;
+        }
+    }
+
+    return -1;
+}
+
+
 
