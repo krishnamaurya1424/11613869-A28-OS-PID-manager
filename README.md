@@ -52,5 +52,16 @@ int allocate_pid(void)                            //For allocate and return pid(
     return -1;
 }
 
+void release_pid(int pid)                               //For releasing pid(Ex 3.20)
+{
+    for(int i = 0; i <= 4700; i++)
+    {
+        if(ArrForPid[i].VarOfPid == pid)
+        {
+            ArrForPid[i].ProcessBit = 0;
+        }
+    }
+}
+
 
 
