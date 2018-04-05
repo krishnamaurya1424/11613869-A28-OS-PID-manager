@@ -63,5 +63,57 @@ void release_pid(int pid)                               //For releasing pid(Ex 3
     }
 }
 
+/* For threads the value of VarOfThread is incremented by 1 and exits and process continue for other threads again and exits. 
+For every execution there is mutex_lock and mutex_unlock. */
+
+void * AccessThread(void* voidA)                          //created thread call this function(Ex 4.20)
+{
+    int pro = allocate_pid();       
+    while (VarOfThread < 100)
+    {
+        pthread_mutex_lock(&l);                           //(Ex 5.36)
+        if (VarOfThread >= 100)
+        {
+            pthread_mutex_unlock(&l);
+            break;
+        }
+
+        VarOfThread++;                    
+        Sleep(100);
+        printf("\n %d",VarOfThread);
+        printf("\n %d",ArrForPid[VarOfThread].VarOfPid);
+        pthread_mutex_unlock(&l);                           
+    }
+    Sleep(5);
+    release_pid(pro);                                        //pid gets released
+}
+
+int main()
+{
+	allocate_map();
+	allocate_pid();
+	release_pid(50);
+	
+    int i =0;
+	pthread_t thread[100];
+    printf("\n In output screen 100 threads created. Every thread will print the values and increment it by 1 with a delay for each process execution");
+    Sleep(1000);       
+
+    for(i = 0; i < 100; i++)
+    {
+        pthread_mutex_init(&l, NULL);
+        pthread_create(&thread[i], NULL, AccessThread, NULL);
+        AccessThread(NULL);
+    }
+
+    for(i = 0; i < 100; i++)
+    {
+        pthread_join(thread[i], NULL);
+        pthread_mutex_destroy(&l);
+    }
+	return 0;
+	
+}
+
 
 
